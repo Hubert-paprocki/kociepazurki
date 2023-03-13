@@ -1,4 +1,4 @@
-import { RiFacebookFill, RiInstagramLine } from "react-icons/ri";
+import { RiFacebookLine, RiInstagramLine } from "react-icons/ri";
 import SocialMediaItem from "./SocialMediaItem";
 import { ReactNode } from "react";
 
@@ -13,7 +13,7 @@ const ListedSocialMedias: ListedSocialMedia[] = [
 	{
 		id: 1,
 		name: `Facebook`,
-		icon: <RiFacebookFill />,
+		icon: <RiFacebookLine />,
 		link: `https://www.facebook.com/jezuit344`,
 	},
 	{

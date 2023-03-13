@@ -9,7 +9,7 @@ interface FormValues {
 	phone: string;
 }
 
-const BasicForm: React.FC = () => {
+const LoginForm: React.FC = () => {
 	const currentDate = new Date();
 	const currentDateString = currentDate.toISOString().substring(0, 10);
 
@@ -24,9 +24,8 @@ const BasicForm: React.FC = () => {
 		}
 		if (!values.date) {
 			errors.date = "Wybranie daty jest wymagane";
-		} else if (currentDate.getDate() > new Date(values.date).getDate()) {
-			errors.date = "Zła Data";
-			console.log(currentDate.getDate(), new Date(values.date).getDate());
+		} else if (currentDate.getTime() > new Date(values.date).getTime()) {
+			errors.date = "Nie potrafię cofać się w przeszłość :)";
 		}
 
 		if (!values.email && values.phone) {
@@ -140,4 +139,4 @@ const BasicForm: React.FC = () => {
 	);
 };
 
-export default BasicForm;
+export default LoginForm;
