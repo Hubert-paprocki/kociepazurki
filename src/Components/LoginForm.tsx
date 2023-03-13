@@ -19,13 +19,20 @@ const LoginForm: React.FC = () => {
 			errors.name = "Imię jest wymagane";
 		}
 		if (!values.email && !values.phone) {
-			errors.email = "Email albo Numer telefonu jest wymagany";
-			errors.phone = "Numer telefonu albo Email jest wymagany ";
+			errors.email = "Email lub Numer telefonu jest wymagany";
+			errors.phone = "Numer telefonu lub Email jest wymagany ";
 		}
 		if (!values.date) {
 			errors.date = "Wybranie daty jest wymagane";
-		} else if (currentDate.getTime() > new Date(values.date).getTime()) {
+		} else if (
+			currentDate.setHours(0, 0, 0, 0) >
+			new Date(values.date).setHours(0, 0, 0, 0)
+		) {
 			errors.date = "Nie potrafię cofać się w przeszłość :)";
+			console.log(
+				currentDate.setHours(0, 0, 0, 0),
+				new Date(values.date).setHours(0, 0, 0, 0)
+			);
 		}
 
 		if (!values.email && values.phone) {
@@ -66,12 +73,12 @@ const LoginForm: React.FC = () => {
 							placeholder="Zofia Kowalska"
 							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
 								errors.name && touched.name
-									? "border-red-500"
+									? "border-rose-500"
 									: "border-gray-300"
 							}`}
 						/>
 						<ErrorMessage name="name">
-							{(msg) => <div className="text-red-500 text-sm mt-1">{msg}</div>}
+							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
 						</ErrorMessage>
 					</div>
 
@@ -86,12 +93,12 @@ const LoginForm: React.FC = () => {
 							type="email"
 							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
 								errors.email && touched.email
-									? "border-red-500"
+									? "border-rose-500"
 									: "border-gray-300"
 							}`}
 						/>
 						<ErrorMessage name="email">
-							{(msg) => <div className="text-red-500 text-sm mt-1">{msg}</div>}
+							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
 						</ErrorMessage>
 					</div>
 					<div className="">
@@ -104,12 +111,12 @@ const LoginForm: React.FC = () => {
 							type="date"
 							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
 								errors.date && touched.date
-									? "border-red-500"
+									? "border-rose-500"
 									: "border-gray-300"
 							}`}
 						/>
 						<ErrorMessage name="date">
-							{(msg) => <div className="text-red-500 text-sm mt-1">{msg}</div>}
+							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
 						</ErrorMessage>
 					</div>
 
@@ -123,12 +130,12 @@ const LoginForm: React.FC = () => {
 							placeholder="123-456-789"
 							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
 								errors.phone && touched.phone
-									? "border-red-500"
+									? "border-rose-500"
 									: "border-gray-300"
 							}`}
 						/>
 						<ErrorMessage name="phone">
-							{(msg) => <div className="text-red-500 text-sm mt-1">{msg}</div>}
+							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
 						</ErrorMessage>
 					</div>
 
