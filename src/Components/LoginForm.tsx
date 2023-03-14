@@ -47,6 +47,11 @@ const LoginForm: React.FC = () => {
 		}
 		return errors;
 	};
+	const fieldClass =
+		"w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-stone-300  py-2 px-4 outline-none placeholder-stone-500 text-stone-600 font-poppins caret-stone-500 font-semibold";
+	const errorClass = "text-rose-400 text-sm font-semibold font-poppins p-1";
+	const labelClass =
+		"font-medium text-stone-600 p-1 font-poppins font-semibold";
 
 	return (
 		<Formik
@@ -61,29 +66,27 @@ const LoginForm: React.FC = () => {
 				alert(JSON.stringify(values, null, 2));
 			}}
 		>
-			{({ errors, touched }) => (
-				<Form className="flex flex-col md:flex-row gap-3 py-10 px-20">
+			{() => (
+				<Form className="flex flex-col md:grid md:grid-cols-4 gap-x-3 gap-y-4 md:gap-y-6 py-10 px-20">
 					<div className="">
-						<label htmlFor="name" className=" font-medium mb-1">
+						<label htmlFor="name" className={labelClass}>
 							Imię
 						</label>
 						<Field
 							id="name"
 							name="name"
 							placeholder="Zofia Kowalska"
-							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
-								errors.name && touched.name
-									? "border-rose-500"
-									: "border-gray-300"
-							}`}
+							className={fieldClass}
 						/>
-						<ErrorMessage name="name">
-							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
-						</ErrorMessage>
+						<ErrorMessage
+							name="name"
+							component="p"
+							className={errorClass}
+						></ErrorMessage>
 					</div>
 
 					<div className="">
-						<label htmlFor="email" className=" font-medium mb-1 mt-4">
+						<label htmlFor="email" className={labelClass}>
 							Adres Email
 						</label>
 						<Field
@@ -91,55 +94,48 @@ const LoginForm: React.FC = () => {
 							name="email"
 							placeholder="Zofia.Kowalska@op.pl"
 							type="email"
-							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
-								errors.email && touched.email
-									? "border-rose-500"
-									: "border-gray-300"
-							}`}
+							className={fieldClass}
 						/>
-						<ErrorMessage name="email">
-							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
-						</ErrorMessage>
+						<ErrorMessage
+							name="email"
+							component="p"
+							className={errorClass}
+						></ErrorMessage>
 					</div>
 					<div className="">
-						<label htmlFor="date" className=" font-medium mb-1 mt-4">
+						<label htmlFor="date" className={labelClass}>
 							Data Spotkania
 						</label>
-						<Field
-							id="date"
+						<Field id="date" name="date" type="date" className={fieldClass} />
+						<ErrorMessage
 							name="date"
-							type="date"
-							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
-								errors.date && touched.date
-									? "border-rose-500"
-									: "border-gray-300"
-							}`}
-						/>
-						<ErrorMessage name="date">
-							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
-						</ErrorMessage>
+							component="p"
+							className={errorClass}
+						></ErrorMessage>
 					</div>
 
 					<div className="">
-						<label htmlFor="phone" className=" font-medium mb-1 mt-4">
+						<label htmlFor="phone" className={labelClass}>
 							Numer Telefonu
 						</label>
 						<Field
 							id="phone"
 							name="phone"
 							placeholder="123-456-789"
-							className={`w-full border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 py-2 px-4 ${
-								errors.phone && touched.phone
-									? "border-rose-500"
-									: "border-gray-300"
-							}`}
+							className={fieldClass}
 						/>
-						<ErrorMessage name="phone">
-							{(msg) => <div className="text-rose-500 text-sm mt-1">{msg}</div>}
-						</ErrorMessage>
+						<ErrorMessage
+							name="phone"
+							component="p"
+							className={errorClass}
+						></ErrorMessage>
 					</div>
 
-					<Button type={"submit"}> Wyślij</Button>
+					<div className="md:col-span-full place-self-center">
+						<Button Primary type={"submit"}>
+							Wyślij
+						</Button>
+					</div>
 				</Form>
 			)}
 		</Formik>

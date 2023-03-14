@@ -6,7 +6,7 @@ import profilePic from "../Images/Gaba.jpg";
 
 const HomePage: React.FC = () => {
 	return (
-		<div className="flex flex-col items-center bg-gray-200 min-h-screen  pt-10 w-full">
+		<div className="flex flex-col items-center bg-gray-200 min-h-screen  pt-10 w-full bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-rose-300/40 via-gray-200 to-indigo-500/10">
 			<NavigationList />
 			<section className=" bg-gray-100 overflow-hidden rounded-sm  max-w-7xl">
 				<div className="flex justify-between">
