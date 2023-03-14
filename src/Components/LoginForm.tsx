@@ -1,4 +1,6 @@
 import React from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { firestore } from "../firebase";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Button from "./Buttons";
 
@@ -35,12 +37,12 @@ const LoginForm: React.FC = () => {
 			);
 		}
 
-		if (!values.email && values.phone) {
+		if ((!values.email && values.phone) || (values.email && values.phone)) {
 			if (!/^(?!0)\d{9}$/.test(values.phone)) {
 				errors.phone = "Zły numer telefonu";
 			}
 		}
-		if (!values.phone && values.email) {
+		if ((!values.phone && values.email) || (values.email && values.phone)) {
 			if (!/\S+@\S+\.\S+/.test(values.email)) {
 				errors.email = "Zły adres email";
 			}
@@ -63,7 +65,7 @@ const LoginForm: React.FC = () => {
 			}}
 			validate={validate}
 			onSubmit={(values) => {
-				alert(JSON.stringify(values, null, 2));
+				addDoc(collection(firestore, "Appointments"), values);
 			}}
 		>
 			{() => (
