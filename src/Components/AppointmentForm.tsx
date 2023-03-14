@@ -11,7 +11,7 @@ interface FormValues {
 	phone: string;
 }
 
-const LoginForm: React.FC = () => {
+const AppointmentForm: React.FC = () => {
 	const currentDate = new Date();
 	const currentDateString = currentDate.toISOString().substring(0, 10);
 
@@ -94,7 +94,7 @@ const LoginForm: React.FC = () => {
 						<Field
 							id="email"
 							name="email"
-							placeholder="Zofia.Kowalska@op.pl"
+							placeholder="Zofia.Kowalska@poczta.pl"
 							type="email"
 							className={fieldClass}
 						/>
@@ -144,4 +144,4 @@ const LoginForm: React.FC = () => {
 	);
 };
 
-export default LoginForm;
+export default AppointmentForm;
