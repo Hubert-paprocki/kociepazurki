@@ -3,7 +3,9 @@ import { collection, addDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import Button from "./Buttons";
-
+interface AppointmentFormProps {
+	setAppointment: () => void;
+}
 interface FormValues {
 	name: string;
 	email: string;
@@ -11,7 +13,9 @@ interface FormValues {
 	phone: string;
 }
 
-const AppointmentForm: React.FC = () => {
+const AppointmentForm: React.FC<AppointmentFormProps> = ({
+	setAppointment,
+}) => {
 	const currentDate = new Date();
 	const currentDateString = currentDate.toISOString().substring(0, 10);
 
@@ -36,7 +40,6 @@ const AppointmentForm: React.FC = () => {
 				new Date(values.date).setHours(0, 0, 0, 0)
 			);
 		}
-
 		if ((!values.email && values.phone) || (values.email && values.phone)) {
 			if (!/^(?!0)\d{9}$/.test(values.phone)) {
 				errors.phone = "Zły numer telefonu";
@@ -49,11 +52,14 @@ const AppointmentForm: React.FC = () => {
 		}
 		return errors;
 	};
+
 	const fieldClass =
 		"w-full border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-stone-300  py-2 px-4 outline-none placeholder-stone-500 text-stone-600 font-poppins caret-stone-500 font-semibold";
 	const errorClass = "text-rose-400 text-sm font-semibold font-poppins p-1";
 	const labelClass =
 		"font-medium text-stone-600 p-1 font-poppins font-semibold";
+	const checkboxClass =
+		"font-medium text-stone-600 p-1 font-poppins font-semibold flex items-center";
 
 	return (
 		<Formik
@@ -64,8 +70,10 @@ const AppointmentForm: React.FC = () => {
 				phone: "",
 			}}
 			validate={validate}
-			onSubmit={(values) => {
+			onSubmit={(values, { resetForm }) => {
 				addDoc(collection(firestore, "Appointments"), values);
+				setAppointment();
+				resetForm();
 			}}
 		>
 			{() => (
@@ -131,6 +139,25 @@ const AppointmentForm: React.FC = () => {
 							component="p"
 							className={errorClass}
 						></ErrorMessage>
+					</div>
+					<div className=" md:col-span-full place-self-center">
+						<p className="text-xl text-stone-600 font-roboto font-extralight mt-4 italic text-center">
+							Preferowana forma kontaku:
+						</p>
+						<div className="flex gap-4">
+							<label className={checkboxClass}>
+								<Field type="radio" name="picked" value="SMS" />
+								SMS
+							</label>
+							<label className={checkboxClass}>
+								<Field type="radio" name="picked" value="Telefon" />
+								Telefon
+							</label>
+							<label className={checkboxClass}>
+								<Field type="radio" name="picked" value="Email" />
+								Email
+							</label>
+						</div>
 					</div>
 
 					<div className="md:col-span-full place-self-center">
