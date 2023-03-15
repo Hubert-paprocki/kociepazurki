@@ -19,7 +19,7 @@ const NavigationItem: React.FC<Props> = ({ linkName, link }) => {
 			<Button onClick={handleClick} type={"button"} menu>
 				{linkName}
 			</Button>
-			<div className=" w-0 group-hover:w-full group-hover:border-b border-slate-400 duration-500"></div>
+			<div className=" w-0 group-hover:w-full border-b border-slate-400 duration-500"></div>
 		</div>
 	);
 };

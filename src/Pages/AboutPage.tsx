@@ -4,10 +4,13 @@ import NavigationList from "../Components/Navigation/NavigationList";
 
 const AboutPage: React.FC = () => {
 	return (
-		<div className="flex flex-col items-center bg-gray-200 min-h-screen  pt-10 w-full bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-rose-300/40 via-gray-200 to-indigo-500/10">
-			<NavigationList />
+		<>
+			<div className="flex flex-col items-center bg-gray-200 min-h-screen  pt-10 w-full bg-[radial-gradient(ellipse_at_right,_var(--tw-gradient-stops))] from-rose-300/40 via-gray-200 to-indigo-500/10">
+				<NavigationList />
+				<div className=" bg-gray-100 overflow-hidden rounded-sm  max-w-7xl"></div>
+			</div>
 			<Footer />
-		</div>
+		</>
 	);
 };
 

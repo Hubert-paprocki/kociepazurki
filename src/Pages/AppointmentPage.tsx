@@ -14,6 +14,10 @@ const AppointmentPage: React.FC = () => {
 						Jeżeli chiałbyś / chciałabyś umówić się ze mną na manicure to
 						skorzystaj z formularza.
 					</h2>
+					<p className="text-xl text-stone-600 font-roboto font-extralight mt-4 italic text-center px-12">
+						Niestety nie mogę zagwarantować Ci mojej dostępności w konkretnym
+						dniu, ale z pewnością znajdziemy dogodny dla nas termin.
+					</p>
 					<h1 className="text-4xl text-stone-600 font-roboto font-extralight mt-12 md:mt-16 italic text-center">
 						Umów Spotkanie
 					</h1>

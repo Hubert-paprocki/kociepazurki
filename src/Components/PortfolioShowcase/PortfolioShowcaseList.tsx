@@ -7,6 +7,10 @@ interface ShowcaseList {
 	imgLink: string;
 }
 
+interface PortfolioShowcaseListProps {
+	small?: boolean;
+}
+
 const PortfolioShowcaseListArr: ShowcaseList[] = [
 	{
 		id: 1,
@@ -30,9 +34,11 @@ const PortfolioShowcaseListArr: ShowcaseList[] = [
 	},
 ];
 
-const PortfolioShowcaseList: React.FC = () => {
-	const renderedPortfolioShowcaseList = PortfolioShowcaseListArr.map(
-		(navigation) => {
+const PortfolioShowcaseList: React.FC<PortfolioShowcaseListProps> = ({
+	small,
+}) => {
+	let renderedPortfolioShowcaseList = PortfolioShowcaseListArr.map(
+		(navigation: ShowcaseList) => {
 			return (
 				<PortfolioShowcaseItem
 					key={navigation.id}
@@ -42,8 +48,13 @@ const PortfolioShowcaseList: React.FC = () => {
 			);
 		}
 	);
+
+	if (small) {
+		renderedPortfolioShowcaseList = renderedPortfolioShowcaseList.slice(0, 4);
+	}
+
 	return (
-		<div className=" bg-slate-100 flex justify-center mx-auto flex-row gap-x-5 h-10 font-poppins text-stone-600 font-bold ">
+		<div className="bg-slate-100 flex justify-center mx-auto flex-row gap-x-5 h-10 font-poppins text-stone-600 font-bold">
 			{renderedPortfolioShowcaseList}
 		</div>
 	);
