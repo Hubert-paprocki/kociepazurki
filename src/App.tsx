@@ -1,8 +1,9 @@
 import React from "react";
 import AppRoutes from "./Routes";
+import { UserProvider } from "./Context/CurrentUser";
 
-const App: React.FC = () => {
-	return <AppRoutes />;
-};
+function App() {
+	return <UserProvider>{<AppRoutes />}</UserProvider>;
+}
 
 export default App;
