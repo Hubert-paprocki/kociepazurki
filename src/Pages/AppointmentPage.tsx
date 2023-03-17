@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../Components/Footer";
 import AppointmentForm from "../Components/AppointmentForm";
 import NavigationList from "../Components/Navigation/NavigationList";
 import SocialMediaList from "../Components/SocialMedia/SocialMediaList";
-import { useState } from "react";
+import LoggedAppointmentForm from "../Components/LoggedAppointmentForm";
 
 const AppointmentPage: React.FC = () => {
 	const [madeAppointment, setMadeAppointment] = useState(false);
@@ -33,7 +33,11 @@ const AppointmentPage: React.FC = () => {
 							Umów Spotkanie
 						</h1>
 					)}
-					<AppointmentForm setAppointment={setAppointment} />
+					{!sessionStorage.currentUser ? (
+						<AppointmentForm setAppointment={setAppointment} />
+					) : (
+						<LoggedAppointmentForm setAppointment={setAppointment} />
+					)}
 					<p className="text-2xl text-stone-600 font-roboto font-extralight md:mt-2 italic text-center ">
 						Albo napisz do mnie prywatnie poprzez któryś z poniższych linków do
 						moich social mediów:

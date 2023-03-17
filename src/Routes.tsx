@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutPage from "./Pages/AboutPage";
+import AccountPage from "./Pages/AccountPage";
 import AdminPage from "./Pages/AdminPage";
 import AppointmentPage from "./Pages/AppointmentPage";
 import HomePage from "./Pages/HomePage";
@@ -17,6 +18,7 @@ const AppRoutes: React.FC = () => {
 				<Route path="/umow-sie" element={<AppointmentPage />} />
 				<Route path="/zaloguj-sie" element={<LoginPage />} />
 				<Route path="/admin" element={<AdminPage />} />
+				<Route path="/twoje-konto" element={<AccountPage />} />
 			</Routes>
 		</BrowserRouter>
 	);

@@ -3,7 +3,6 @@ import Footer from "../Components/Footer";
 import NavigationList from "../Components/Navigation/NavigationList";
 import PortfolioShowcaseList from "../Components/PortfolioShowcase/PortfolioShowcaseList";
 import profilePic from "../Images/Gaba.jpg";
-
 const HomePage: React.FC = () => {
 	return (
 		<>

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
 import Button from "./Buttons";
 import {
 	getAuth,
 	createUserWithEmailAndPassword,
 	sendEmailVerification,
+	updateProfile,
 } from "firebase/auth";
 
 interface SignUpFormValues {
@@ -28,16 +29,38 @@ const SignUpForm: React.FC = () => {
 
 	const onSubmit = async (values: SignUpFormValues) => {
 		const auth = getAuth();
-		createUserWithEmailAndPassword(auth, values.email, values.password)
-			.then(async (userCredential) => {
+		try {
+			const userCredential = await createUserWithEmailAndPassword(
+				auth,
+				values.email,
+				values.password
+			);
+			if (userCredential && userCredential.user) {
 				const user = userCredential.user;
-				const uId = userCredential.user.uid;
-				addDoc(collection(firestore, uId), values);
+				console.log(user);
+				const uId = user.uid;
+				const userDocRef = doc(firestore, "Users", uId);
+				await setDoc(userDocRef, values);
+				await updateProfile(user, {
+					displayName: values.name,
+					photoURL: "https://example.com/jane-q-user/profile.jpg",
+				});
+				const userData = auth.currentUser;
+
+				if (userData !== null) {
+					userData.providerData.forEach((profile) => {
+						console.log("Sign-in provider: " + profile.providerId);
+						console.log("  Provider-specific UID: " + profile.uid);
+						console.log("  Name: " + profile.displayName);
+						console.log("  Email: " + profile.email);
+						console.log("  Photo URL: " + profile.photoURL);
+					});
+				}
 				await sendEmailVerification(user);
-			})
-			.catch(() => {
-				setAuthError("Użytkownik o tych danych już istnieje");
-			});
+			}
+		} catch (error) {
+			setAuthError("Użytkownik o tych danych już istnieje");
+		}
 	};
 
 	const validate = (values: SignUpFormValues) => {

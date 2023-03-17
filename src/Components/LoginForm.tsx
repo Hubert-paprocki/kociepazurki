@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../firebase";
 import Button from "./Buttons";
+import { useNavigate } from "react-router-dom";
 
 interface FormValues {
 	email: string;
@@ -12,7 +13,7 @@ interface FormValues {
 
 const LoginForm: React.FC = () => {
 	const [authError, setAuthError] = useState<string>("");
-
+	const navigate = useNavigate();
 	const validate = (values: FormValues) => {
 		const errors: Partial<FormValues> = {};
 		if (!values.email) {
@@ -37,26 +38,38 @@ const LoginForm: React.FC = () => {
 				password: "",
 			}}
 			validate={validate}
-			onSubmit={(values, { resetForm }) => {
+			onSubmit={async (values, { resetForm }) => {
 				const auth = getAuth();
-				signInWithEmailAndPassword(auth, values.email, values.password)
-					.then((userCredential) => {
-						const currentUser = userCredential.user?.uid;
-						sessionStorage.setItem("currentUser", currentUser);
-						console.log(`Logged in user: ${userCredential.user?.uid}`);
-						const q = query(collection(firestore, currentUser));
-						const unsubscribe = onSnapshot(q, (querySnapshot) => {
-							const newData = querySnapshot.docs.map((doc) => ({
-								id: doc.id,
-								...doc.data(),
-							}));
-							console.log(newData);
-						});
-					})
-					.catch((error) => {
-						setAuthError("Nieprawidłowy adres email lub hasło");
-						resetForm();
-					});
+				try {
+					const userCredential = await signInWithEmailAndPassword(
+						auth,
+						values.email,
+						values.password
+					);
+					const { uid: currentUser } = userCredential.user;
+					sessionStorage.setItem("currentUser", currentUser);
+					console.log(`Logged in user: ${currentUser} `);
+					const docRef = doc(firestore, "Users", currentUser);
+					const docSnap = await getDoc(docRef);
+					if (docSnap.exists()) {
+						const userData = docSnap.data();
+						console.log("Document data:", userData);
+						const currentUserEmail = userData.email;
+						const currentUserName = userData.name;
+						const currentUserPhone = userData.phone;
+						sessionStorage.setItem("currentUserEmail", currentUserEmail);
+						sessionStorage.setItem("currentUserName", currentUserName);
+						sessionStorage.setItem("currentUserPhone", currentUserPhone);
+					} else {
+						console.log("No such document!");
+					}
+
+					navigate("/");
+				} catch (error) {
+					setAuthError("Nieprawidłowy adres email lub hasło");
+					resetForm();
+					console.log(error);
+				}
 			}}
 		>
 			{() => (
