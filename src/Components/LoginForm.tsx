@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { firestore } from "../firebase";
 import Button from "./Buttons";
 
 interface FormValues {
 	email: string;
 	password: string;
 }
-interface AdminAuthProps {
-	onAuthSuccess: () => void;
-}
 
-const AdminAuth: React.FC<AdminAuthProps> = ({ onAuthSuccess }) => {
+const LoginForm: React.FC = () => {
 	const [authError, setAuthError] = useState<string>("");
 
 	const validate = (values: FormValues) => {
@@ -38,14 +37,25 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onAuthSuccess }) => {
 				password: "",
 			}}
 			validate={validate}
-			onSubmit={(values) => {
+			onSubmit={(values, { resetForm }) => {
 				const auth = getAuth();
 				signInWithEmailAndPassword(auth, values.email, values.password)
-					.then(() => {
-						onAuthSuccess();
+					.then((userCredential) => {
+						const currentUser = userCredential.user?.uid;
+						sessionStorage.setItem("currentUser", currentUser);
+						console.log(`Logged in user: ${userCredential.user?.uid}`);
+						const q = query(collection(firestore, currentUser));
+						const unsubscribe = onSnapshot(q, (querySnapshot) => {
+							const newData = querySnapshot.docs.map((doc) => ({
+								id: doc.id,
+								...doc.data(),
+							}));
+							console.log(newData);
+						});
 					})
-					.catch(() => {
+					.catch((error) => {
 						setAuthError("Nieprawidłowy adres email lub hasło");
+						resetForm();
 					});
 			}}
 		>
@@ -61,18 +71,12 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onAuthSuccess }) => {
 							placeholder="Hasło"
 							className={fieldClass}
 						/>
-						<ErrorMessage
-							name="password"
-							component="p"
-							className={errorClass}
-						></ErrorMessage>
 					</div>
 					<div className="">
 						<label htmlFor="email" className={labelClass}>
 							Adres Email
 						</label>
 						<Field
-							id="email"
 							name="email"
 							placeholder="Zofia.Kowalska@poczta.pl"
 							type="email"
@@ -85,7 +89,6 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onAuthSuccess }) => {
 						></ErrorMessage>
 						{authError && <p className={errorClass}>{authError}</p>}
 					</div>
-
 					<Button Primary type={"submit"}>
 						Wyślij
 					</Button>
@@ -95,4 +98,4 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onAuthSuccess }) => {
 	);
 };
 
-export default AdminAuth;
+export default LoginForm;

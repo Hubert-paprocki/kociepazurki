@@ -29,6 +29,11 @@ const navigationList: ListedNavigation[] = [
 		name: `Umów spotkanie`,
 		link: `/umow-sie`,
 	},
+	{
+		id: 4,
+		name: `Zaloguj się`,
+		link: `/zaloguj-sie`,
+	},
 ];
 
 const NavigationList: React.FC = () => {
