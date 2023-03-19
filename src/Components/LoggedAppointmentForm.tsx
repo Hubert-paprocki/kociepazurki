@@ -57,18 +57,14 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
 				const auth = getAuth();
 				const userData = auth.currentUser;
 				if (userData !== null) {
-					userData.providerData.forEach((profile) => {
-						const userId = profile.uid;
-						const userName = profile.displayName;
-						const userEmail = profile.email;
+					const name = userData?.displayName;
+					const email = userData?.email;
 
-						addDoc(collection(firestore, sessionStorage.currentUser), {
-							date,
-							phone,
-							userId,
-							userName,
-							userEmail,
-						});
+					addDoc(collection(firestore, userData?.uid), {
+						date,
+						phone,
+						name,
+						email,
 					});
 				}
 				setAppointment();
@@ -81,7 +77,13 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
 						<label htmlFor="date" className={labelClass}>
 							Data Spotkania
 						</label>
-						<Field id="date" name="date" type="date" className={fieldClass} />
+						<Field
+							id="date"
+							name="date"
+							type="datetime-local"
+							step="6"
+							className={fieldClass}
+						/>
 						<ErrorMessage
 							name="date"
 							component="p"

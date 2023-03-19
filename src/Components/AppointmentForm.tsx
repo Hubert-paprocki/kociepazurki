@@ -116,7 +116,12 @@ const AppointmentForm: React.FC<AppointmentFormProps> = ({
 						<label htmlFor="date" className={labelClass}>
 							Data Spotkania
 						</label>
-						<Field id="date" name="date" type="date" className={fieldClass} />
+						<Field
+							id="date"
+							name="date"
+							type="datetime-local"
+							className={fieldClass}
+						/>
 						<ErrorMessage
 							name="date"
 							component="p"

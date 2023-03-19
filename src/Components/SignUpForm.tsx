@@ -45,17 +45,7 @@ const SignUpForm: React.FC = () => {
 					displayName: values.name,
 					photoURL: "https://example.com/jane-q-user/profile.jpg",
 				});
-				const userData = auth.currentUser;
 
-				if (userData !== null) {
-					userData.providerData.forEach((profile) => {
-						console.log("Sign-in provider: " + profile.providerId);
-						console.log("  Provider-specific UID: " + profile.uid);
-						console.log("  Name: " + profile.displayName);
-						console.log("  Email: " + profile.email);
-						console.log("  Photo URL: " + profile.photoURL);
-					});
-				}
 				await sendEmailVerification(user);
 			}
 		} catch (error) {

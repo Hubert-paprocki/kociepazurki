@@ -49,6 +49,9 @@ const NavigationList: React.FC = () => {
 		if (navigation.name === "twoje konto" && !currentUser) {
 			return null;
 		}
+		if (navigation.name === "Zaloguj się" && currentUser) {
+			return null;
+		}
 		return (
 			<NavigationItem
 				key={navigation.id}
