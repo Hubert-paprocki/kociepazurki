@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavigationItem from "./NavigationItem";
 import { useLocation } from "react-router-dom";
 
@@ -36,20 +36,32 @@ const navigationList: ListedNavigation[] = [
 	},
 	{
 		id: 6,
-		name: `twoje konto`,
+		name: `Wyloguj się`,
+		link: ``,
+	},
+	{
+		id: 7,
+		name: `Twoje konto`,
 		link: `/twoje-konto`,
 	},
 ];
 
 const NavigationList: React.FC = () => {
-	const currentUser = sessionStorage.currentUser;
 	const location = useLocation();
+	const [userState, setUserState] = useState<boolean>(false);
+	const handleUserState = () => {
+		setUserState(!userState);
+	};
 
 	const renderedNavigationList = navigationList.map((navigation) => {
-		if (navigation.name === "twoje konto" && !currentUser) {
+		if (
+			(navigation.name === "Twoje konto" ||
+				navigation.name === "Wyloguj się") &&
+			!userState
+		) {
 			return null;
 		}
-		if (navigation.name === "Zaloguj się" && currentUser) {
+		if (navigation.name === "Zaloguj się" && userState) {
 			return null;
 		}
 		return (
@@ -58,6 +70,7 @@ const NavigationList: React.FC = () => {
 				linkName={navigation.name}
 				link={navigation.link}
 				active={location.pathname === navigation.link}
+				handleUserState={handleUserState}
 			/>
 		);
 	});
