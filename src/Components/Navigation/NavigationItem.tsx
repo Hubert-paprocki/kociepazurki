@@ -1,35 +1,24 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../Buttons";
-import { getAuth, signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { logout } from "../../Store/slices/userSlice";
 
 interface Props {
   linkName: string;
   link: string;
   active?: boolean;
-  handleUserState: () => void;
 }
 
-const NavigationItem: React.FC<Props> = ({
-  linkName,
-  link,
-  active,
-  handleUserState,
-}) => {
+const NavigationItem: React.FC<Props> = ({ linkName, link, active }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleClick = () => {
     navigate(link);
     if (linkName === "Wyloguj się") {
-      const auth = getAuth();
-      signOut(auth)
-        .then(() => {
-          handleUserState();
-        })
-        .catch((error) => {});
-    } else if (linkName === "Zaloguj się") {
-      handleUserState();
+      dispatch(logout());
     }
   };
 

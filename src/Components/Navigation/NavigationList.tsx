@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import NavigationItem from "./NavigationItem";
 import { useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../Store/store";
+import { login, logout } from "../../Store/slices/userSlice";
 
 interface ListedNavigation {
   id: number;
@@ -48,20 +51,27 @@ const navigationList: ListedNavigation[] = [
 
 const NavigationList: React.FC = () => {
   const location = useLocation();
-  const [userState, setUserState] = useState<boolean>(false);
-  const handleUserState = () => {
-    setUserState(!userState);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated
+  );
+  const dispatch = useDispatch();
+  const handleUserState = (val: boolean) => {
+    if (val) {
+      dispatch(login());
+    } else {
+      dispatch(logout());
+    }
   };
-
+  console.log(isAuthenticated);
   const renderedNavigationList = navigationList.map((navigation) => {
     if (
       (navigation.name === "Twoje konto" ||
         navigation.name === "Wyloguj się") &&
-      !userState
+      !isAuthenticated
     ) {
       return null;
     }
-    if (navigation.name === "Zaloguj się" && userState) {
+    if (navigation.name === "Zaloguj się" && isAuthenticated) {
       return null;
     }
     return (
@@ -70,7 +80,6 @@ const NavigationList: React.FC = () => {
         linkName={navigation.name}
         link={navigation.link}
         active={location.pathname === navigation.link}
-        handleUserState={handleUserState}
       />
     );
   });
